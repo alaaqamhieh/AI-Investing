@@ -1,0 +1,86 @@
+{
+  "generatedAt": "2026-06-29T13:30:00.000Z",
+  "_note": "SAMPLE DATA. Replaced by the daily Claude refresh routine. See scripts/refresh-instructions.md.",
+  "totals": {
+    "netWorth": 487250.12,
+    "investable": 412980.44,
+    "dayChange": 3120.55,
+    "dayChangePct": 0.64
+  },
+  "accounts": [
+    {
+      "id": "rh-individual",
+      "institution": "Robinhood",
+      "name": "Individual Brokerage",
+      "type": "brokerage",
+      "value": 86420.18,
+      "dayChange": 1240.32,
+      "dayChangePct": 1.46,
+      "cash": 4210.55,
+      "positions": [
+        { "symbol": "NVDA", "name": "NVIDIA", "assetType": "equity", "qty": 60, "price": 174.22, "value": 10453.2, "costBasis": 7200, "unrealizedPnl": 3253.2, "unrealizedPnlPct": 45.18, "dayChangePct": 2.31 },
+        { "symbol": "AAPL", "name": "Apple", "assetType": "equity", "qty": 80, "price": 212.45, "value": 16996, "costBasis": 14800, "unrealizedPnl": 2196, "unrealizedPnlPct": 14.84, "dayChangePct": -0.42 },
+        { "symbol": "MSFT", "name": "Microsoft", "assetType": "equity", "qty": 45, "price": 468.9, "value": 21100.5, "costBasis": 18250, "unrealizedPnl": 2850.5, "unrealizedPnlPct": 15.62, "dayChangePct": 0.88 },
+        { "symbol": "PLTR", "name": "Palantir", "assetType": "equity", "qty": 300, "price": 38.12, "value": 11436, "costBasis": 9000, "unrealizedPnl": 2436, "unrealizedPnlPct": 27.07, "dayChangePct": 3.95 },
+        { "symbol": "SPY", "name": "S&P 500 ETF", "assetType": "etf", "qty": 40, "price": 556.6, "value": 22264, "costBasis": 21000, "unrealizedPnl": 1264, "unrealizedPnlPct": 6.02, "dayChangePct": 0.31 }
+      ]
+    },
+    {
+      "id": "chase-you-invest",
+      "institution": "Chase",
+      "name": "JPMorgan Self-Directed",
+      "type": "brokerage",
+      "value": 154300.0,
+      "dayChange": 980.0,
+      "dayChangePct": 0.64,
+      "cash": 12000,
+      "positions": [
+        { "symbol": "VOO", "name": "Vanguard S&P 500", "assetType": "etf", "qty": 180, "price": 512.3, "value": 92214, "dayChangePct": 0.33 },
+        { "symbol": "VTI", "name": "Vanguard Total Market", "assetType": "etf", "qty": 120, "price": 291.5, "value": 34980, "dayChangePct": 0.29 },
+        { "symbol": "GOOGL", "name": "Alphabet", "assetType": "equity", "qty": 90, "price": 170.12, "value": 15310.8, "dayChangePct": 1.12 }
+      ]
+    },
+    {
+      "id": "empower-401k",
+      "institution": "Empower",
+      "name": "401(k) Retirement",
+      "type": "retirement",
+      "value": 246529.94,
+      "dayChange": 900.23,
+      "dayChangePct": 0.37,
+      "cash": 0,
+      "positions": [
+        { "symbol": "FXAIX", "name": "Fidelity 500 Index", "assetType": "other", "qty": 950, "price": 198.4, "value": 188480, "dayChangePct": 0.31 },
+        { "symbol": "FSPSX", "name": "Fidelity Intl Index", "assetType": "other", "qty": 1200, "price": 48.37, "value": 58049.94, "dayChangePct": 0.52 }
+      ]
+    }
+  ],
+  "topMovers": {
+    "up": [
+      { "symbol": "PLTR", "name": "Palantir", "qty": 300, "price": 38.12, "value": 11436, "dayChangePct": 3.95 },
+      { "symbol": "NVDA", "name": "NVIDIA", "qty": 60, "price": 174.22, "value": 10453.2, "dayChangePct": 2.31 },
+      { "symbol": "GOOGL", "name": "Alphabet", "qty": 90, "price": 170.12, "value": 15310.8, "dayChangePct": 1.12 }
+    ],
+    "down": [
+      { "symbol": "AAPL", "name": "Apple", "qty": 80, "price": 212.45, "value": 16996, "dayChangePct": -0.42 }
+    ]
+  },
+  "watchlist": [
+    { "symbol": "AMD", "name": "Advanced Micro Devices", "qty": 0, "price": 168.4, "value": 0, "dayChangePct": 1.85 },
+    { "symbol": "TSLA", "name": "Tesla", "qty": 0, "price": 248.9, "value": 0, "dayChangePct": -1.2 },
+    { "symbol": "META", "name": "Meta Platforms", "qty": 0, "price": 612.3, "value": 0, "dayChangePct": 0.74 }
+  ],
+  "screeners": [
+    {
+      "name": "Momentum Burst (placeholder)",
+      "description": "Placeholder screen. Replace with your real screener filters once shared, or wire to a Robinhood saved scan.",
+      "source": "placeholder",
+      "columns": ["symbol", "price", "changePct", "rsi", "relVolume"],
+      "results": [
+        { "symbol": "PLTR", "price": 38.12, "changePct": 3.95, "rsi": 68, "relVolume": 2.4 },
+        { "symbol": "NVDA", "price": 174.22, "changePct": 2.31, "rsi": 61, "relVolume": 1.6 },
+        { "symbol": "AMD", "price": 168.4, "changePct": 1.85, "rsi": 58, "relVolume": 1.9 }
+      ]
+    }
+  ]
+}
