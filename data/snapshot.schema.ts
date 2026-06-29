@@ -123,6 +123,7 @@ export type Totals = {
 
 export type Snapshot = {
   generatedAt: string; // ISO timestamp of when the routine pulled the data
+  sample?: boolean; // true while showing placeholder data (not a live pull)
   totals: Totals;
   accounts: Account[];
   topMovers: { up: Position[]; down: Position[] };

@@ -1,5 +1,6 @@
 {
   "generatedAt": "2026-06-29T13:45:00.000Z",
+  "sample": true,
   "_note": "SAMPLE DATA, SOR-shaped and illustrative. Compliance flags here are placeholders; the daily routine fills real values from Musaffa/Zoya/PIF (Shariah) and AFSC/Who Profits (BDS). Replaced by scripts/refresh-instructions.md.",
   "totals": {
     "netWorth": 374949.94,
