@@ -61,10 +61,16 @@ Protection on Pro), so only you can view it.
 
 ## Daily refresh
 
-Set up a recurring Claude Code (web) session that runs `scripts/refresh-instructions.md`
-each trading morning. It needs the Robinhood + Era Context MCP servers connected and
-write access to this repo. Each run commits a fresh snapshot + brief and pushes, which
-triggers a Vercel rebuild.
+The refresh must run as a **scheduled Claude Code (web) session**, because the data
+comes from the Robinhood + Era Context **MCP servers, which authenticate inside a Claude
+session** — a GitHub Action or plain cron can't reach them.
+
+- Procedure the session runs: **`scripts/refresh-instructions.md`**
+- Ready-to-paste trigger prompt + setup steps: **`scripts/daily-refresh-prompt.md`**
+
+Each run regenerates `data/snapshot.json` + `data/brief.md`, commits, and pushes —
+triggering a Vercel rebuild. **Arm it for real data only after the Vercel site is
+password-protected** (see Privacy above).
 
 ## Roadmap (later phases)
 
