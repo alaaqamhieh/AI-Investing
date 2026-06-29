@@ -15,6 +15,24 @@ inside a Claude session, and committed as static files.** Phase 1 is strictly
 
 ## Step-by-step
 
+> **Follow the SOR methodology** in `docs/SOR-strategy.md`. Two hard rules:
+> 1. **Pricing discipline** — verify all prices live (web search / Robinhood). Never use
+>    CSV/screenshot/prior-session prices for any call; CSV is for shares & cost basis only.
+> 2. **Flag, never hide** — every position and candidate is shown with its Shariah +
+>    BDS flags rather than omitted.
+
+### 0. Screen every holding + candidate (SOR two layers)
+- **Layer 1 — Shariah:** cross-reference Musaffa (primary), Zoya, HalalScreener, PIF,
+  Islamicly. Record `compliance.shariah.status` (compliant / uncomfortable / questionable
+  / non-compliant / unknown) with `sources` and any `note`.
+- **Layer 2 — BDS:** AFSC Investigate, UN settlement database, Who Profits, Boycat.
+  Record `compliance.bds.flagged` + `sources`/`note`.
+- Tag each name's `theme` (AI compute / power-grid-nuclear / robotics / biotech / quality
+  growth / energy hedge) and `sorStage` (building/holding/trimming/watch/exited).
+- Keep flagged-but-excluded names (e.g. **NVDA**: PIF uncomfortable + BDS via Mellanox →
+  do not own) in `watchlist`/`screeners` for awareness, never as holdings.
+- Populate `screenerStack` and the `shariah` + `bds` screener entries.
+
 ### 1. Pull Robinhood (live brokerage data)
 - `get_accounts` → get the `account_number`(s).
 - For each account: `get_portfolio` → total value, buying power, cash.

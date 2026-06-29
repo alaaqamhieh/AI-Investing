@@ -1,4 +1,10 @@
-import { getSnapshot, allocationByInstitution, allocationByAssetType } from "@/lib/data";
+import {
+  getSnapshot,
+  allocationByInstitution,
+  allocationByAssetType,
+  themeAllocation,
+  complianceSummary,
+} from "@/lib/data";
 import { usd, pct, signedUsd } from "@/lib/format";
 import { StatTile } from "@/components/StatTile";
 import { Card } from "@/components/Card";
@@ -9,6 +15,8 @@ import { LastUpdated } from "@/components/LastUpdated";
 export default function OverviewPage() {
   const snap = getSnapshot();
   const { totals } = snap;
+  const themes = themeAllocation(snap);
+  const compliance = complianceSummary(snap);
 
   return (
     <div className="space-y-6">
@@ -26,7 +34,11 @@ export default function OverviewPage() {
           subTrend={totals.dayChange}
         />
         <StatTile label="Investable" value={usd(totals.investable)} />
-        <StatTile label="Accounts" value={String(snap.accounts.length)} />
+        <StatTile
+          label="Compliance"
+          value={`${compliance.flagged} flagged`}
+          sub={`${compliance.bds} BDS · ${compliance.total} holdings`}
+        />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -38,9 +50,16 @@ export default function OverviewPage() {
             </div>
           </div>
         </Card>
-        <Card title="Top Movers Today">
-          <MoversList up={snap.topMovers.up} down={snap.topMovers.down} />
-        </Card>
+        <div className="space-y-4">
+          <Card title="Top Movers Today">
+            <MoversList up={snap.topMovers.up} down={snap.topMovers.down} />
+          </Card>
+          {themes.length > 0 && (
+            <Card title="SOR Theme Rotation">
+              <AllocationChart data={themes} title="By theme" />
+            </Card>
+          )}
+        </div>
       </div>
 
       <Card title="Accounts">

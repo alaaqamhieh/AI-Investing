@@ -1,43 +1,40 @@
 {
-  "generatedAt": "2026-06-29T13:30:00.000Z",
-  "_note": "SAMPLE DATA. Replaced by the daily Claude refresh routine. See scripts/refresh-instructions.md.",
+  "generatedAt": "2026-06-29T13:45:00.000Z",
+  "_note": "SAMPLE DATA, SOR-shaped and illustrative. Compliance flags here are placeholders; the daily routine fills real values from Musaffa/Zoya/PIF (Shariah) and AFSC/Who Profits (BDS). Replaced by scripts/refresh-instructions.md.",
   "totals": {
-    "netWorth": 487250.12,
-    "investable": 412980.44,
-    "dayChange": 3120.55,
-    "dayChangePct": 0.64
+    "netWorth": 374949.94,
+    "investable": 128420.0,
+    "dayChange": 1812.0,
+    "dayChangePct": 0.49
   },
   "accounts": [
     {
-      "id": "rh-individual",
-      "institution": "Robinhood",
-      "name": "Individual Brokerage",
+      "id": "chase-you-invest",
+      "institution": "Chase",
+      "name": "J.P. Morgan Self-Directed (main)",
       "type": "brokerage",
-      "value": 86420.18,
-      "dayChange": 1240.32,
-      "dayChangePct": 1.46,
-      "cash": 4210.55,
+      "value": 88340.0,
+      "dayChange": 708.0,
+      "dayChangePct": 0.81,
+      "cash": 15000.0,
       "positions": [
-        { "symbol": "NVDA", "name": "NVIDIA", "assetType": "equity", "qty": 60, "price": 174.22, "value": 10453.2, "costBasis": 7200, "unrealizedPnl": 3253.2, "unrealizedPnlPct": 45.18, "dayChangePct": 2.31 },
-        { "symbol": "AAPL", "name": "Apple", "assetType": "equity", "qty": 80, "price": 212.45, "value": 16996, "costBasis": 14800, "unrealizedPnl": 2196, "unrealizedPnlPct": 14.84, "dayChangePct": -0.42 },
-        { "symbol": "MSFT", "name": "Microsoft", "assetType": "equity", "qty": 45, "price": 468.9, "value": 21100.5, "costBasis": 18250, "unrealizedPnl": 2850.5, "unrealizedPnlPct": 15.62, "dayChangePct": 0.88 },
-        { "symbol": "PLTR", "name": "Palantir", "assetType": "equity", "qty": 300, "price": 38.12, "value": 11436, "costBasis": 9000, "unrealizedPnl": 2436, "unrealizedPnlPct": 27.07, "dayChangePct": 3.95 },
-        { "symbol": "SPY", "name": "S&P 500 ETF", "assetType": "etf", "qty": 40, "price": 556.6, "value": 22264, "costBasis": 21000, "unrealizedPnl": 1264, "unrealizedPnlPct": 6.02, "dayChangePct": 0.31 }
+        { "symbol": "MU", "name": "Micron", "assetType": "equity", "qty": 220, "price": 128.0, "value": 28160.0, "costBasis": 22000.0, "unrealizedPnl": 6160.0, "unrealizedPnlPct": 28.0, "dayChangePct": 2.1, "theme": "AI compute", "sorStage": "trimming", "compliance": { "shariah": { "status": "compliant", "sources": ["Musaffa", "Zoya"] }, "bds": { "flagged": false } } },
+        { "symbol": "CEG", "name": "Constellation Energy", "assetType": "equity", "qty": 95, "price": 252.0, "value": 23940.0, "costBasis": 21500.0, "unrealizedPnl": 2440.0, "unrealizedPnlPct": 11.35, "dayChangePct": 1.2, "theme": "power/grid/nuclear", "sorStage": "building", "compliance": { "shariah": { "status": "compliant", "sources": ["Musaffa", "Zoya"] }, "bds": { "flagged": false } } },
+        { "symbol": "XOM", "name": "Exxon Mobil", "assetType": "equity", "qty": 180, "price": 118.0, "value": 21240.0, "costBasis": 19800.0, "unrealizedPnl": 1440.0, "unrealizedPnlPct": 7.27, "dayChangePct": -0.8, "theme": "energy hedge", "sorStage": "holding", "compliance": { "shariah": { "status": "compliant", "sources": ["Musaffa"] }, "bds": { "flagged": false } } }
       ]
     },
     {
-      "id": "chase-you-invest",
-      "institution": "Chase",
-      "name": "JPMorgan Self-Directed",
+      "id": "rh-individual",
+      "institution": "Robinhood",
+      "name": "Individual Brokerage (secondary)",
       "type": "brokerage",
-      "value": 154300.0,
-      "dayChange": 980.0,
-      "dayChangePct": 0.64,
-      "cash": 12000,
+      "value": 40080.0,
+      "dayChange": 218.0,
+      "dayChangePct": 0.55,
+      "cash": 6000.0,
       "positions": [
-        { "symbol": "VOO", "name": "Vanguard S&P 500", "assetType": "etf", "qty": 180, "price": 512.3, "value": 92214, "dayChangePct": 0.33 },
-        { "symbol": "VTI", "name": "Vanguard Total Market", "assetType": "etf", "qty": 120, "price": 291.5, "value": 34980, "dayChangePct": 0.29 },
-        { "symbol": "GOOGL", "name": "Alphabet", "assetType": "equity", "qty": 90, "price": 170.12, "value": 15310.8, "dayChangePct": 1.12 }
+        { "symbol": "ISRG", "name": "Intuitive Surgical", "assetType": "equity", "qty": 30, "price": 545.0, "value": 16350.0, "costBasis": 12000.0, "unrealizedPnl": 4350.0, "unrealizedPnlPct": 36.25, "dayChangePct": 0.9, "theme": "robotics", "sorStage": "holding", "compliance": { "shariah": { "status": "compliant", "sources": ["Musaffa", "Zoya"] }, "bds": { "flagged": false } } },
+        { "symbol": "COST", "name": "Costco", "assetType": "equity", "qty": 18, "price": 985.0, "value": 17730.0, "costBasis": 14500.0, "unrealizedPnl": 3230.0, "unrealizedPnlPct": 22.28, "dayChangePct": 0.4, "theme": "quality growth", "sorStage": "holding", "compliance": { "shariah": { "status": "compliant", "sources": ["Musaffa", "Islamicly"] }, "bds": { "flagged": false } } }
       ]
     },
     {
@@ -46,40 +43,75 @@
       "name": "401(k) Retirement",
       "type": "retirement",
       "value": 246529.94,
-      "dayChange": 900.23,
-      "dayChangePct": 0.37,
+      "dayChange": 886.0,
+      "dayChangePct": 0.36,
       "cash": 0,
       "positions": [
-        { "symbol": "FXAIX", "name": "Fidelity 500 Index", "assetType": "other", "qty": 950, "price": 198.4, "value": 188480, "dayChangePct": 0.31 },
-        { "symbol": "FSPSX", "name": "Fidelity Intl Index", "assetType": "other", "qty": 1200, "price": 48.37, "value": 58049.94, "dayChangePct": 0.52 }
+        { "symbol": "FXAIX", "name": "Fidelity 500 Index", "assetType": "other", "qty": 950, "price": 198.4, "value": 188480.0, "dayChangePct": 0.31, "compliance": { "shariah": { "status": "unknown", "note": "Index fund — not individually screened" } } },
+        { "symbol": "FSPSX", "name": "Fidelity Intl Index", "assetType": "other", "qty": 1200, "price": 48.37, "value": 58049.94, "dayChangePct": 0.52, "compliance": { "shariah": { "status": "unknown", "note": "Index fund — not individually screened" } } }
       ]
     }
   ],
   "topMovers": {
     "up": [
-      { "symbol": "PLTR", "name": "Palantir", "qty": 300, "price": 38.12, "value": 11436, "dayChangePct": 3.95 },
-      { "symbol": "NVDA", "name": "NVIDIA", "qty": 60, "price": 174.22, "value": 10453.2, "dayChangePct": 2.31 },
-      { "symbol": "GOOGL", "name": "Alphabet", "qty": 90, "price": 170.12, "value": 15310.8, "dayChangePct": 1.12 }
+      { "symbol": "MU", "name": "Micron", "qty": 220, "price": 128.0, "value": 28160.0, "dayChangePct": 2.1, "theme": "AI compute" },
+      { "symbol": "CEG", "name": "Constellation Energy", "qty": 95, "price": 252.0, "value": 23940.0, "dayChangePct": 1.2, "theme": "power/grid/nuclear" },
+      { "symbol": "ISRG", "name": "Intuitive Surgical", "qty": 30, "price": 545.0, "value": 16350.0, "dayChangePct": 0.9, "theme": "robotics" }
     ],
     "down": [
-      { "symbol": "AAPL", "name": "Apple", "qty": 80, "price": 212.45, "value": 16996, "dayChangePct": -0.42 }
+      { "symbol": "XOM", "name": "Exxon Mobil", "qty": 180, "price": 118.0, "value": 21240.0, "dayChangePct": -0.8, "theme": "energy hedge" }
     ]
   },
   "watchlist": [
-    { "symbol": "AMD", "name": "Advanced Micro Devices", "qty": 0, "price": 168.4, "value": 0, "dayChangePct": 1.85 },
-    { "symbol": "TSLA", "name": "Tesla", "qty": 0, "price": 248.9, "value": 0, "dayChangePct": -1.2 },
-    { "symbol": "META", "name": "Meta Platforms", "qty": 0, "price": 612.3, "value": 0, "dayChangePct": 0.74 }
+    { "symbol": "WDC", "name": "Western Digital", "qty": 0, "price": 71.5, "value": 0, "dayChangePct": -3.2, "theme": "AI compute", "sorStage": "watch", "upsideTargetPct": 35, "compliance": { "shariah": { "status": "compliant", "sources": ["Musaffa", "Zoya"] }, "bds": { "flagged": false } } },
+    { "symbol": "CRSP", "name": "CRISPR Therapeutics", "qty": 0, "price": 58.2, "value": 0, "dayChangePct": 1.4, "theme": "biotech", "sorStage": "watch", "upsideTargetPct": 40, "compliance": { "shariah": { "status": "compliant", "sources": ["Musaffa"] }, "bds": { "flagged": false } } },
+    { "symbol": "NVDA", "name": "NVIDIA", "qty": 0, "price": 174.22, "value": 0, "dayChangePct": 2.3, "theme": "AI compute", "sorStage": "watch", "compliance": { "shariah": { "status": "uncomfortable", "sources": ["PIF"], "note": "PIF uncomfortable; passes AAOIFI ratios elsewhere" }, "bds": { "flagged": true, "sources": ["Who Profits"], "note": "Deep Israeli R&D footprint via Mellanox" } } }
+  ],
+  "screenerStack": {
+    "shariah": ["Musaffa", "Zoya", "HalalScreener", "PIF", "Islamicly"],
+    "bds": ["AFSC Investigate", "UN settlement database", "Who Profits", "Boycat"]
+  },
+  "themeAllocation": [
+    { "theme": "AI compute", "value": 28160.0, "symbols": ["MU"] },
+    { "theme": "power/grid/nuclear", "value": 23940.0, "symbols": ["CEG"] },
+    { "theme": "energy hedge", "value": 21240.0, "symbols": ["XOM"] },
+    { "theme": "quality growth", "value": 17730.0, "symbols": ["COST"] },
+    { "theme": "robotics", "value": 16350.0, "symbols": ["ISRG"] }
   ],
   "screeners": [
     {
-      "name": "Momentum Burst (placeholder)",
-      "description": "Placeholder screen. Replace with your real screener filters once shared, or wire to a Robinhood saved scan.",
-      "source": "placeholder",
-      "columns": ["symbol", "price", "changePct", "rsi", "relVolume"],
+      "name": "SOR Opportunity Scan — 30%+ upside, thematic",
+      "description": "Thematic candidates across AI compute, power/grid/nuclear, robotics, biotech, and quality growth. Every name carries its compliance flags; decision is yours.",
+      "source": "opportunity",
+      "columns": ["symbol", "theme", "price", "changePct", "upsideTargetPct", "compliance", "note"],
       "results": [
-        { "symbol": "PLTR", "price": 38.12, "changePct": 3.95, "rsi": 68, "relVolume": 2.4 },
-        { "symbol": "NVDA", "price": 174.22, "changePct": 2.31, "rsi": 61, "relVolume": 1.6 },
-        { "symbol": "AMD", "price": 168.4, "changePct": 1.85, "rsi": 58, "relVolume": 1.9 }
+        { "symbol": "WDC", "theme": "AI compute", "price": 71.5, "changePct": -3.2, "upsideTargetPct": 35, "compliance": { "shariah": { "status": "compliant" }, "bds": { "flagged": false } }, "note": "Watchlist trigger: sympathy selling, not company-specific" },
+        { "symbol": "CRSP", "theme": "biotech", "price": 58.2, "changePct": 1.4, "upsideTargetPct": 40, "compliance": { "shariah": { "status": "compliant" }, "bds": { "flagged": false } }, "note": "Gene-editing; clean dip candidate" },
+        { "symbol": "CEG", "theme": "power/grid/nuclear", "price": 252.0, "changePct": 1.2, "upsideTargetPct": 30, "compliance": { "shariah": { "status": "compliant" }, "bds": { "flagged": false } }, "note": "Add zone ~$250 (already building)" },
+        { "symbol": "NVDA", "theme": "AI compute", "price": 174.22, "changePct": 2.3, "upsideTargetPct": 45, "compliance": { "shariah": { "status": "uncomfortable", "sources": ["PIF"] }, "bds": { "flagged": true, "note": "Mellanox" } }, "note": "Do NOT own — tracked for awareness only" }
+      ]
+    },
+    {
+      "name": "Shariah compliance screen (Layer 1)",
+      "description": "Holdings + watchlist run against the Shariah stack. Flagged names are shown, never hidden.",
+      "source": "shariah",
+      "columns": ["symbol", "compliance", "note"],
+      "results": [
+        { "symbol": "MU", "compliance": { "shariah": { "status": "compliant", "sources": ["Musaffa", "Zoya"] } }, "note": "Held" },
+        { "symbol": "CEG", "compliance": { "shariah": { "status": "compliant", "sources": ["Musaffa"] } }, "note": "Held" },
+        { "symbol": "NVDA", "compliance": { "shariah": { "status": "uncomfortable", "sources": ["PIF"] } }, "note": "PIF uncomfortable — excluded" },
+        { "symbol": "FXAIX", "compliance": { "shariah": { "status": "unknown" } }, "note": "Index fund — not individually screened" }
+      ]
+    },
+    {
+      "name": "Israeli-complicity / BDS screen (Layer 2)",
+      "description": "Secondary screen across holdings + candidates. Sources: AFSC Investigate, UN database, Who Profits, Boycat.",
+      "source": "bds",
+      "columns": ["symbol", "compliance", "note"],
+      "results": [
+        { "symbol": "NVDA", "compliance": { "bds": { "flagged": true, "sources": ["Who Profits"] } }, "note": "Deep Israeli R&D footprint via Mellanox" },
+        { "symbol": "MU", "compliance": { "bds": { "flagged": false } }, "note": "No flag found" },
+        { "symbol": "CEG", "compliance": { "bds": { "flagged": false } }, "note": "No flag found" }
       ]
     }
   ]

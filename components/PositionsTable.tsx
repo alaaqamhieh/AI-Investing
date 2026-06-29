@@ -1,5 +1,6 @@
 import type { Position } from "@/data/snapshot.schema";
 import { usd, pct, dirColor, qtyFmt } from "@/lib/format";
+import { ComplianceBadge } from "./ComplianceBadge";
 
 export function PositionsTable({
   positions,
@@ -11,12 +12,14 @@ export function PositionsTable({
   if (positions.length === 0) {
     return <p className="text-sm text-muted">No positions.</p>;
   }
+  const hasCompliance = positions.some((p) => p.compliance);
   return (
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
           <tr className="text-left text-xs uppercase tracking-wide text-muted border-b border-border">
             <th className="py-2 pr-3 font-medium">Symbol</th>
+            {hasCompliance && <th className="py-2 px-3 font-medium">Screen</th>}
             <th className="py-2 px-3 font-medium text-right">Qty</th>
             <th className="py-2 px-3 font-medium text-right">Price</th>
             <th className="py-2 px-3 font-medium text-right">Value</th>
@@ -30,7 +33,13 @@ export function PositionsTable({
               <td className="py-2 pr-3">
                 <span className="font-medium">{p.symbol}</span>
                 {p.name && <span className="block text-xs text-muted">{p.name}</span>}
+                {p.theme && <span className="block text-[10px] text-muted/70">{p.theme}</span>}
               </td>
+              {hasCompliance && (
+                <td className="py-2 px-3">
+                  <ComplianceBadge compliance={p.compliance} size="xs" />
+                </td>
+              )}
               <td className="py-2 px-3 text-right tabular-nums">{qtyFmt(p.qty)}</td>
               <td className="py-2 px-3 text-right tabular-nums">{usd(p.price)}</td>
               <td className="py-2 px-3 text-right tabular-nums">{usd(p.value)}</td>

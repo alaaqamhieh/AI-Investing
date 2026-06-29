@@ -31,7 +31,10 @@ Robinhood + Era MCP servers connected and write access to this repo.
 ## Trigger prompt (paste this)
 
 ```
-Refresh the AI Investing Dashboard data for today.
+Refresh the AI Investing Dashboard data for today, following my SOR methodology
+(docs/SOR-strategy.md). Two hard rules: verify all prices LIVE (web search / Robinhood),
+never from CSV/screenshots/stale data; and FLAG every name with its Shariah + BDS status
+rather than hiding it.
 
 Follow scripts/refresh-instructions.md exactly:
 1. Pull live data (read-only) from the Robinhood MCP (accounts, portfolio, equity +

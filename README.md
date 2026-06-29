@@ -27,10 +27,21 @@ See **`scripts/refresh-instructions.md`** for the exact pull/assemble procedure.
 
 ## Pages
 
-- **Overview** — net worth, day change, allocation donuts (by institution + asset type), top movers.
-- **Accounts** — per-account cards (Robinhood / Chase / Empower) with positions tables.
-- **Screener** — saved screens (placeholder until your own screener/strategy is wired in).
-- **Daily Brief** — the morning market brief rendered from Markdown.
+- **Overview** — net worth, day change, allocation donuts (institution + asset type), SOR theme rotation, compliance summary, top movers.
+- **Accounts** — per-account cards (Robinhood / Chase / Empower) with positions tables + Shariah/BDS flags.
+- **Screener** — SOR two-layer screening (Shariah → BDS) with the screener stack and the 30%+ upside opportunity scan; flag, never hide.
+- **Daily Brief** — the SOR-format morning brief rendered from Markdown.
+- **Strategy** — the captured SOR methodology (`docs/SOR-strategy.md`).
+
+## Strategy (SOR)
+
+The dashboard encodes **SOR — Structured Opportunistic Rotation** (see
+`docs/SOR-strategy.md`): 30%+ upside thematic rotation across AI compute, power/grid/
+nuclear, robotics, biotech, and quality growth; a two-layer compliance screen (Shariah
+primary via Musaffa/Zoya/PIF/Islamicly/HalalScreener, then Israeli-complicity/BDS via
+AFSC/UN/Who Profits/Boycat); staged buying, trim into strength, cut losers; and two hard
+rules baked into the refresh routine — **verify prices live** (never CSV/stale) and
+**flag every name, never hide it**.
 
 ## Local development
 

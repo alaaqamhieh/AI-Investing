@@ -41,3 +41,44 @@ export function allocationByAssetType(snapshot: Snapshot) {
     .map(([label, value]) => ({ label, value }))
     .sort((x, y) => y.value - x.value);
 }
+
+// SOR theme rotation: value per theme across holdings. Uses precomputed
+// themeAllocation if present, else derives it from position.theme tags.
+export function themeAllocation(snapshot: Snapshot) {
+  if (snapshot.themeAllocation?.length) {
+    return snapshot.themeAllocation
+      .map((t) => ({ label: t.theme, value: t.value }))
+      .sort((x, y) => y.value - x.value);
+  }
+  const totals = new Map<string, number>();
+  for (const acct of snapshot.accounts) {
+    for (const p of acct.positions) {
+      if (!p.theme) continue;
+      totals.set(p.theme, (totals.get(p.theme) ?? 0) + p.value);
+    }
+  }
+  return [...totals.entries()]
+    .map(([label, value]) => ({ label, value }))
+    .sort((x, y) => y.value - x.value);
+}
+
+// Compliance roll-up across all held positions, for an at-a-glance summary.
+export function complianceSummary(snapshot: Snapshot) {
+  let screened = 0;
+  let flagged = 0; // any non-compliant/uncomfortable/questionable OR BDS flag
+  let bds = 0;
+  let total = 0;
+  for (const acct of snapshot.accounts) {
+    for (const p of acct.positions) {
+      total += 1;
+      const c = p.compliance;
+      if (!c) continue;
+      if (c.shariah && c.shariah.status !== "unknown") screened += 1;
+      const shariahFlag =
+        c.shariah && c.shariah.status !== "compliant" && c.shariah.status !== "unknown";
+      if (shariahFlag || c.bds?.flagged) flagged += 1;
+      if (c.bds?.flagged) bds += 1;
+    }
+  }
+  return { total, screened, flagged, bds };
+}
