@@ -121,6 +121,27 @@ export type Totals = {
   dayChangePct: number;
 };
 
+// EXPERIMENTAL — not yet governing real decisions. See docs/SOR-strategy.md
+// "Macro Deployment Gate" section. Answers: should new capital go out right now,
+// and how aggressively, before any individual name is even considered.
+export type DeploymentPosture = "full" | "reduced" | "defensive";
+
+export type MacroSignal = {
+  name: string; // e.g. "VIX Level", "Market Breadth"
+  score: number; // 0-100, higher = more supportive of deploying
+  weight: number; // fraction of the composite, sums to 1 across all signals
+  raw?: string; // human-readable current reading, e.g. "VIX 18.0 (61st pct)"
+};
+
+export type MacroGate = {
+  generatedAt: string;
+  compositeScore: number; // 0-100 weighted blend of signals
+  posture: DeploymentPosture;
+  sizingPct: number; // % of normal position sizing implied by posture
+  signals: MacroSignal[];
+  note?: string;
+};
+
 export type Snapshot = {
   generatedAt: string; // ISO timestamp of when the routine pulled the data
   sample?: boolean; // true while showing placeholder data (not a live pull)
@@ -132,4 +153,5 @@ export type Snapshot = {
   // SOR additions
   screenerStack?: ScreenerStack;
   themeAllocation?: ThemeAllocation[];
+  macroGate?: MacroGate; // experimental — see type above
 };

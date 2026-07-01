@@ -2,6 +2,21 @@
   "generatedAt": "2026-06-29T13:45:00.000Z",
   "sample": true,
   "_note": "SAMPLE DATA, SOR-shaped and illustrative. Compliance flags here are placeholders; the daily routine fills real values from Musaffa/Zoya/PIF (Shariah) and AFSC/Who Profits (BDS). Replaced by scripts/refresh-instructions.md.",
+  "macroGate": {
+    "generatedAt": "2026-06-29T13:45:00.000Z",
+    "compositeScore": 60,
+    "posture": "reduced",
+    "sizingPct": 60,
+    "note": "EXPERIMENTAL, illustrative sample values only — no live macro data feed wired up yet. See docs/SOR-strategy.md.",
+    "signals": [
+      { "name": "VIX Level", "score": 39, "weight": 0.25, "raw": "VIX 18.0 (61st percentile of trailing 1yr)" },
+      { "name": "VIX Term Structure", "score": 100, "weight": 0.2, "raw": "VIX/VIX3M 0.85 (contango — calm)" },
+      { "name": "Market Breadth", "score": 55, "weight": 0.2, "raw": "58% of S&P 500 names above 200-day MA" },
+      { "name": "Credit Spreads", "score": 79, "weight": 0.15, "raw": "HY-Treasury spread proxy, z = -1.16 (tight)" },
+      { "name": "Put/Call Sentiment", "score": 64, "weight": 0.1, "raw": "VIX 20-day rate of change -1.2%" },
+      { "name": "Factor Crowding", "score": 10, "weight": 0.1, "raw": "momentum/value 60-day correlation -0.69 (crowded)" }
+    ]
+  },
   "totals": {
     "netWorth": 374949.94,
     "investable": 128420.0,

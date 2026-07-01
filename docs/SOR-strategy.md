@@ -83,6 +83,47 @@ last actionable session was Thu Jun 18.)
 - **WDC (Western Digital)** — new opportunity; hit watchlist trigger on sympathy selling
   (not company-specific news).
 
+## Experimental: Macro Deployment Gate (under evaluation, not yet adopted)
+
+> **Status: testing only.** This does not govern any real buy/sell/trim decisions yet.
+> It is decoupled from the Shariah/BDS screening above — nothing about that flow
+> changes because of this section. Adapted from a workflow demonstrated in a public
+> YouTube video on trading with Claude, reframed here in SOR's own terms.
+
+**The idea:** before looking at individual names at all, score whether the *market
+environment* currently favors deploying fresh capital, and how aggressively. This would
+formalize SOR's existing instinct to avoid stale data, broken dips, and emotional
+entries into an actual number rather than a judgment call.
+
+**Six inputs, each scored 0–100** (current sample weights, subject to revision):
+
+| Signal | Weight | What it reads |
+|---|---|---|
+| VIX Level | 25% | Where VIX sits in its trailing 1-year range — low = calmer = higher score |
+| VIX Term Structure | 20% | Front-month VIX vs. 3-month VIX — contango (below 1.0) = calm; backwardation (above 1.0) = stress |
+| Market Breadth | 20% | % of S&P 500 names above their 200-day average — catches narrow, mega-cap-only rallies masking broad weakness |
+| Credit Spreads | 15% | High-yield vs. Treasury spread, z-scored vs. trailing year — tight = healthy, wide = stress |
+| Put/Call Sentiment | 10% | Proxied via how fast VIX is rising/falling — fast rise = fear building |
+| Factor Crowding | 10% | Correlation between momentum and value factor baskets — a sharply negative correlation flags a crowded, reversal-prone momentum trade |
+
+**Composite → posture:**
+- **70–100 → Full deploy** (100% normal sizing)
+- **40–69 → Reduced** (60% sizing, higher bar for new positions)
+- **0–39 → Defensive** (25% sizing, no new longs; the opportunity scan would pause entirely)
+
+**Why it might be worth adopting:** it's a concrete, backtestable answer to "should I
+even be looking for new positions today," ahead of running the Shariah/BDS/opportunity
+scan — rather than relying on feel. Dashboard shows this on its own page, clearly marked
+experimental, with sample values only (no live macro data feed built yet).
+
+**A related idea worth borrowing later (not built yet):** an AI-scored "second opinion"
+layer on top of the deterministic opportunity scan — feed each candidate's recent
+financials to Claude for a 1–10 fundamental-quality read, blend it with the quant score,
+and specifically flag any name where the two disagree sharply. The disagreements
+themselves are often the most interesting signal. This would need actual API wiring
+into the refresh routine and is a future decision, not something built into the
+dashboard yet.
+
 ## Tooling
 
 - **Brokerages:** J.P. Morgan / Chase (primary), Robinhood (secondary, Claude connector active).

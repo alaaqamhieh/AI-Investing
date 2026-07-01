@@ -14,6 +14,7 @@ const nav = [
   { href: "/screener", label: "Screener" },
   { href: "/brief", label: "Daily Brief" },
   { href: "/strategy", label: "Strategy" },
+  { href: "/macro-gate", label: "Macro Gate", experimental: true },
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -37,9 +38,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link
                   key={n.href}
                   href={n.href}
-                  className="px-3 py-1.5 rounded-md text-muted hover:text-white hover:bg-panel2 transition-colors"
+                  className="px-3 py-1.5 rounded-md text-muted hover:text-white hover:bg-panel2 transition-colors flex items-center gap-1.5"
                 >
                   {n.label}
+                  {n.experimental && (
+                    <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-[#e0a23a]/15 text-[#e0a23a] leading-none">
+                      beta
+                    </span>
+                  )}
                 </Link>
               ))}
             </nav>
