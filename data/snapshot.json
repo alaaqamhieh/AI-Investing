@@ -17,6 +17,42 @@
       { "name": "Factor Crowding", "score": 10, "weight": 0.1, "raw": "momentum/value 60-day correlation -0.69 (crowded)" }
     ]
   },
+  "optionsAnalysis": {
+    "generatedAt": "2026-06-29T13:45:00.000Z",
+    "ticker": "WDC",
+    "expiry": "2026-07-17",
+    "spot": 71.5,
+    "atmStrike": 70,
+    "atmIv": 52.0,
+    "realizedVol30d": 38.0,
+    "ivRank": 88,
+    "skew25d": -140.5,
+    "daysToEarnings": 21,
+    "verdictTags": ["Neutral", "IV Rich"],
+    "summary": "Front-end volatility is running well above WDC's recent realized moves, which favors premium-selling setups over outright directional bets, especially with earnings still three weeks out.",
+    "ideas": [
+      { "side": "put", "action": "sell", "strike": 70, "label": "ATM", "delta": -0.45, "rationale": "With IV rank running high, the near-the-money put pays a rich premium for defined-risk income if you're comfortable owning shares near this level." },
+      { "side": "call", "action": "sell", "strike": 77.5, "label": "+8% OTM", "delta": 0.15, "rationale": "An out-of-the-money call that captures elevated volatility while leaving room for the stock to run before it's tested." },
+      { "side": "put", "action": "sell", "strike": 63, "label": "+12% OTM downside", "delta": -0.12, "rationale": "A lower-delta put further out that still benefits from rich vol, offering a wider cushion in exchange for a smaller premium." },
+      { "side": "call", "action": "buy", "strike": 70, "label": "ATM", "delta": 0.5, "rationale": "For a directional long, the at-the-money call gives cleaner upside exposure, but pays full price for the elevated volatility." }
+    ],
+    "risks": [
+      "Earnings are about 3 weeks out, so part of this premium may reflect anticipated post-earnings movement rather than pure time decay.",
+      "A sharp move in either direction before expiry can erode the edge faster than time decay accrues.",
+      "IV rank can shift quickly if broader market volatility resets, changing how attractive these trades look intraday.",
+      "Selling puts near the money still carries assignment risk if the stock weakens into expiry."
+    ],
+    "chain": [
+      { "strike": 55, "callOi": 120, "callVol": 4, "callDelta": 0.94, "callIv": 68.2, "callBid": 16.4, "callAsk": 17.6, "putBid": 0.05, "putAsk": 0.2, "putIv": 71.0, "putDelta": -0.03, "putVol": 2, "putOi": 340 },
+      { "strike": 60, "callOi": 210, "callVol": 9, "callDelta": 0.88, "callIv": 63.5, "callBid": 11.9, "callAsk": 12.9, "putBid": 0.15, "putAsk": 0.35, "putIv": 66.4, "putDelta": -0.07, "putVol": 6, "putOi": 512 },
+      { "strike": 63, "callOi": 165, "callVol": 5, "callDelta": 0.81, "callIv": 60.1, "callBid": 9.3, "callAsk": 10.1, "putBid": 0.3, "putAsk": 0.55, "putIv": 62.8, "putDelta": -0.12, "putVol": 11, "putOi": 480 },
+      { "strike": 65, "callOi": 240, "callVol": 14, "callDelta": 0.75, "callIv": 57.9, "callBid": 7.4, "callAsk": 8.2, "putBid": 0.5, "putAsk": 0.8, "putIv": 59.6, "putDelta": -0.18, "putVol": 15, "putOi": 620 },
+      { "strike": 70, "callOi": 480, "callVol": 38, "callDelta": 0.5, "callIv": 52.0, "callBid": 3.7, "callAsk": 4.2, "putBid": 1.9, "putAsk": 2.3, "putIv": 52.4, "putDelta": -0.45, "putVol": 42, "putOi": 890 },
+      { "strike": 75, "callOi": 300, "callVol": 21, "callDelta": 0.28, "callIv": 54.3, "callBid": 1.5, "callAsk": 1.9, "putBid": 4.6, "putAsk": 5.1, "putIv": 55.8, "putDelta": -0.7, "putVol": 9, "putOi": 260 },
+      { "strike": 77.5, "callOi": 190, "callVol": 12, "callDelta": 0.15, "callIv": 56.1, "callBid": 0.7, "callAsk": 1.0, "putBid": 6.6, "putAsk": 7.2, "putIv": 57.9, "putDelta": -0.85, "putVol": 4, "putOi": 150 },
+      { "strike": 80, "callOi": 140, "callVol": 6, "callDelta": 0.08, "callIv": 58.4, "callBid": 0.35, "callAsk": 0.55, "putBid": 8.8, "putAsk": 9.6, "putIv": 60.2, "putDelta": -0.92, "putVol": 2, "putOi": 95 }
+    ]
+  },
   "totals": {
     "netWorth": 374949.94,
     "investable": 128420.0,

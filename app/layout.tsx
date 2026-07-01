@@ -15,6 +15,7 @@ const nav = [
   { href: "/brief", label: "Daily Brief" },
   { href: "/strategy", label: "Strategy" },
   { href: "/macro-gate", label: "Macro Gate", experimental: true },
+  { href: "/options", label: "Options", experimental: true },
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

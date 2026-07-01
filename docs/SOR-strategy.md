@@ -124,6 +124,20 @@ themselves are often the most interesting signal. This would need actual API wir
 into the refresh routine and is a future decision, not something built into the
 dashboard yet.
 
+## Experimental: Options Chain Analyzer (observed pattern, different sub-domain)
+
+> **Status: exploratory, not adopted.** Options premium-selling is a different sub-domain
+> than SOR's equity rotation focus — nothing here changes the equity strategy above.
+
+A single-ticker, ad-hoc tool (unlike the portfolio/universe-wide layers above): given a
+ticker and expiry, it reads implied vol vs. realized vol, an IV-rank proxy, and put/call
+skew, then surfaces a handful of specific strike ideas (mostly premium-selling, one
+directional long as the pricier alternative) paired with an explicit "risks to know" list
+for each. Every idea is shown with its counter-case rather than presented as a clean
+recommendation — a habit that lines up with SOR's own "screen before action" principle.
+Built as a UI/concept demo on the dashboard's **Options** page with illustrative sample
+data only; no live options-chain feed is wired up.
+
 ## Tooling
 
 - **Brokerages:** J.P. Morgan / Chase (primary), Robinhood (secondary, Claude connector active).
