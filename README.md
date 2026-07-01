@@ -19,25 +19,36 @@ The hosted site is a **dynamic Next.js app on Vercel** — two different data pa
    `app/api/quotes` and `app/api/macro` — and `lib/data.ts#getLiveEnrichedSnapshot()`
    merges the results onto the committed snapshot at request time (cached ~5 min via
    Next.js `revalidate`). No Claude session is involved in this path, ever.
-2. **Holdings, cost basis, compliance flags, screener candidates — a scheduled Claude
-   routine.** These come from account data (Robinhood/Era MCP) or SOR analysis that only
-   a Claude session can produce, so they're still committed to:
-   - `data/snapshot.json` — portfolio snapshot (typed by `data/snapshot.schema.ts`)
+2. **Real holdings (quantities, cost basis) — code-only, via SnapTrade.** Once
+   connected (one-time, see [Real holdings via SnapTrade](#real-holdings-via-snaptrade)
+   below), `lib/snaptrade.ts` pulls real positions for Robinhood, Chase, and Empower
+   directly from `app/api/holdings` — no Claude session, no manual entry. Live prices
+   from Yahoo Finance are layered on top for pricing (SnapTrade itself recommends this).
+   Until connected, the site falls back to the committed sample accounts below.
+3. **Compliance flags, screener candidates — a scheduled Claude routine.** SOR theme
+   tags and Shariah/BDS screening are analysis only a Claude session can produce, so
+   they're still committed to:
+   - `data/snapshot.json` — sample/fallback portfolio snapshot (typed by `data/snapshot.schema.ts`)
+   - `data/tags.json` — SOR theme + compliance tags, matched onto real holdings by symbol
    - `data/brief.md` — the day's market brief
 
 ```
 Yahoo Finance (yahoo-finance2)  ──/api/quotes, /api/macro──▶  live prices, VIX, credit spread
                                                                 (no Claude session, ever)
-Scheduled Claude routine  ──MCP pull──▶  data/snapshot.json + data/brief.md  ──push──▶  Vercel rebuild
-                                                                (holdings, compliance, screening)
+SnapTrade (snaptrade-typescript-sdk)  ──/api/holdings──▶  real holdings, Robinhood/Chase/Empower
+                                                                (no Claude session, ever)
+Scheduled Claude routine  ──MCP pull──▶  data/tags.json + data/brief.md  ──push──▶  Vercel rebuild
+                                                                (SOR theme + compliance tags, brief)
 ```
 
-See **`scripts/refresh-instructions.md`** for the holdings/compliance pull procedure.
+See **`scripts/refresh-instructions.md`** for the compliance-tagging procedure and
+**`docs/SNAPTRADE-SETUP.md`** for connecting real accounts.
 
 ## Pages
 
 - **Overview** — net worth, day change, allocation donuts (institution + asset type), SOR theme rotation, compliance summary, top movers.
-- **Accounts** — per-account cards (Robinhood / Chase / Empower) with positions tables + Shariah/BDS flags.
+- **Accounts** — per-account cards (Robinhood / Chase / Empower) with positions tables + Shariah/BDS flags. Real once SnapTrade is connected, sample data otherwise.
+- **Connect** *(`/connect`)* — one-time SnapTrade account-linking page; not in the nav (visit directly once per institution).
 - **Screener** — SOR two-layer screening (Shariah → BDS) with the screener stack and the 30%+ upside opportunity scan; flag, never hide.
 - **Daily Brief** — the SOR-format morning brief rendered from Markdown.
 - **Strategy** — the captured SOR methodology (`docs/SOR-strategy.md`).
@@ -66,6 +77,24 @@ npm start        # serve the production build
 The app reads holdings/compliance from the committed sample `data/snapshot.json` (no
 live credentials needed) and layers in **live prices/VIX/credit-spreads from Yahoo
 Finance** at request time — no API key or account required for that part either.
+Without SnapTrade env vars set, `/api/holdings` and the accounts merge fail gracefully
+and the site just shows the sample data — safe to run locally with zero setup.
+
+## Real holdings via SnapTrade
+
+Real, automatically-syncing holdings for Robinhood, Chase, and Empower — no manual
+data entry — via [SnapTrade](https://snaptrade.com)'s hosted account-linking flow
+(your brokerage password goes to SnapTrade, never to this app). Full walkthrough:
+**`docs/SNAPTRADE-SETUP.md`**.
+
+Short version: sign up at snaptrade.com, run `scripts/snaptrade-register-user.mjs`
+once to get a user secret, set 4 `SNAPTRADE_*` env vars in Vercel, then visit
+`/connect` on the deployed site and click through it three times (once per
+institution). After that, Overview/Accounts show real holdings automatically, synced
+on every page load — no further action needed.
+
+**Do this only after enabling Vercel Deployment Protection** (see Privacy below) —
+real holdings are more sensitive than the public market data already live on the site.
 
 ## Deploy to Vercel
 

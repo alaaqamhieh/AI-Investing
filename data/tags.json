@@ -1,0 +1,11 @@
+{
+  "_note": "SOR theme/compliance tags keyed by symbol. SnapTrade returns real holdings (qty/price/cost-basis) but knows nothing about SOR themes or Shariah/BDS screening — this file supplies that layer, matched onto real holdings by symbol. Compliance is left 'unknown' until actually screened via Musaffa/Zoya/PIF/Islamicly (Shariah) and AFSC/Who Profits (BDS) — never fabricate a compliance verdict.",
+  "BTDR": { "name": "Bitdeer Technologies", "theme": "AI compute" },
+  "OKLO": { "name": "Oklo Inc.", "theme": "power/grid/nuclear" },
+  "NOW": { "name": "ServiceNow", "theme": "quality growth" },
+  "SNOW": { "name": "Snowflake", "theme": "AI compute" },
+  "SMH": { "name": "VanEck Semiconductor ETF", "theme": "AI compute" },
+  "DRAM": { "name": "Themes Semiconductor Memory ETF", "theme": "AI compute" },
+  "WDC": { "name": "Western Digital", "theme": "AI compute" },
+  "CRDO": { "name": "Credo Technology", "theme": "AI compute" }
+}
