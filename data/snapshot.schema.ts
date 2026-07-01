@@ -131,6 +131,7 @@ export type MacroSignal = {
   score: number; // 0-100, higher = more supportive of deploying
   weight: number; // fraction of the composite, sums to 1 across all signals
   raw?: string; // human-readable current reading, e.g. "VIX 18.0 (61st pct)"
+  live?: boolean; // true if `raw` reflects a real live market data pull (score may still be approximate)
 };
 
 export type MacroGate = {

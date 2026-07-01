@@ -53,14 +53,19 @@ export function MacroGateCard({ gate }: { gate: MacroGate }) {
         <div className="space-y-2.5">
           {gate.signals.map((s) => (
             <div key={s.name} className="flex items-center gap-3">
-              <div className="w-40 shrink-0 text-sm">
+              <div className="w-40 shrink-0 text-sm flex items-center gap-1.5">
                 {SIGNAL_TERM[s.name] ? <Term k={SIGNAL_TERM[s.name]}>{s.name}</Term> : s.name}
+                {s.live && (
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-up/15 text-up leading-none shrink-0">
+                    live
+                  </span>
+                )}
               </div>
               <div className="flex-1 h-2 rounded-full bg-panel2 overflow-hidden">
                 <div className={`h-full rounded-full ${scoreColor(s.score)}`} style={{ width: `${s.score}%` }} />
               </div>
               <div className="w-10 shrink-0 text-sm text-right tabular-nums">{s.score}</div>
-              {s.raw && <div className="hidden md:block w-64 shrink-0 text-xs text-muted">{s.raw}</div>}
+              {s.raw && <div className="hidden md:block w-72 shrink-0 text-xs text-muted">{s.raw}</div>}
             </div>
           ))}
         </div>
