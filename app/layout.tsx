@@ -15,7 +15,6 @@ const nav = [
   { href: "/brief", label: "Daily Brief" },
   { href: "/strategy", label: "Strategy" },
   { href: "/macro-gate", label: "Macro Gate", experimental: true },
-  { href: "/options", label: "Options", experimental: true },
 ];
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -25,7 +24,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen bg-bg text-[#e6e9ef] font-sans antialiased">
         {isSample && (
           <div className="bg-[#e0a23a]/15 text-[#e0a23a] text-center text-xs py-1.5 px-4 border-b border-[#e0a23a]/20">
-            Demo — <strong>sample data</strong>, not live accounts. Real balances are pulled
+            Demo — <strong>sample holdings</strong>, not live accounts. Prices, VIX, and
+            credit-spread readings are fetched live via code; real balances are pulled
             only after the site is private.
           </div>
         )}
@@ -54,7 +54,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </header>
         <main className="mx-auto max-w-6xl px-4 py-6">{children}</main>
         <footer className="mx-auto max-w-6xl px-4 py-8 text-xs text-muted">
-          Phase 1 · Read-only snapshot dashboard · Data refreshed by a scheduled Claude routine.
+          Phase 1 · Read-only dashboard · Prices, VIX, and credit spreads fetch live via
+          code (no Claude session required). Holdings and screening data are refreshed by
+          a scheduled Claude routine.
         </footer>
       </body>
     </html>

@@ -1,5 +1,5 @@
 import {
-  getSnapshot,
+  getLiveEnrichedSnapshot,
   allocationByInstitution,
   allocationByAssetType,
   themeAllocation,
@@ -12,8 +12,10 @@ import { AllocationChart } from "@/components/AllocationChart";
 import { MoversList } from "@/components/MoversList";
 import { LastUpdated } from "@/components/LastUpdated";
 
-export default function OverviewPage() {
-  const snap = getSnapshot();
+export const revalidate = 300;
+
+export default async function OverviewPage() {
+  const snap = await getLiveEnrichedSnapshot();
   const { totals } = snap;
   const themes = themeAllocation(snap);
   const compliance = complianceSummary(snap);
