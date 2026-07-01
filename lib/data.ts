@@ -3,14 +3,80 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import type { Position, Snapshot } from "@/data/snapshot.schema";
+import type { Account, Position, Snapshot } from "@/data/snapshot.schema";
 import { getLiveQuotes, getLiveMacroSignals, type LiveQuote } from "@/lib/marketData";
+import { getRealHoldings, type RealPosition } from "@/lib/snaptrade";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 
 export function getSnapshot(): Snapshot {
   const raw = fs.readFileSync(path.join(DATA_DIR, "snapshot.json"), "utf-8");
   return JSON.parse(raw) as Snapshot;
+}
+
+type SymbolTag = {
+  name?: string;
+  theme?: Position["theme"];
+  sorStage?: Position["sorStage"];
+  compliance?: Position["compliance"];
+};
+
+function getTags(): Record<string, SymbolTag> {
+  try {
+    const raw = fs.readFileSync(path.join(DATA_DIR, "tags.json"), "utf-8");
+    const parsed = JSON.parse(raw);
+    delete parsed._note;
+    return parsed;
+  } catch {
+    return {};
+  }
+}
+
+// Groups SnapTrade's flat position list into Account[], applying SOR theme/compliance
+// tags by symbol (SnapTrade knows real holdings, not SOR classification).
+function buildAccountsFromRealHoldings(positions: RealPosition[]): Account[] {
+  const tags = getTags();
+  const byAccount = new Map<string, RealPosition[]>();
+  for (const p of positions) {
+    const list = byAccount.get(p.accountId) ?? [];
+    list.push(p);
+    byAccount.set(p.accountId, list);
+  }
+
+  return [...byAccount.entries()].map(([accountId, positions]) => {
+    const first = positions[0];
+    const builtPositions: Position[] = positions
+      .filter((p) => p.qty !== 0)
+      .map((p) => {
+        const tag = tags[p.symbol];
+        return {
+          symbol: p.symbol,
+          name: tag?.name ?? p.name,
+          qty: p.qty,
+          price: p.price,
+          value: p.qty * p.price,
+          costBasis: p.costBasis,
+          unrealizedPnl: p.costBasis !== undefined ? p.qty * p.price - p.costBasis : undefined,
+          unrealizedPnlPct:
+            p.costBasis !== undefined && p.costBasis !== 0
+              ? ((p.qty * p.price - p.costBasis) / p.costBasis) * 100
+              : undefined,
+          theme: tag?.theme,
+          sorStage: tag?.sorStage,
+          compliance: tag?.compliance,
+        };
+      });
+    return {
+      id: accountId,
+      institution: first.institution,
+      name: first.accountName,
+      type: "brokerage",
+      value: builtPositions.reduce((sum, p) => sum + p.value, 0),
+      dayChange: 0,
+      dayChangePct: 0,
+      positions: builtPositions,
+    };
+  });
 }
 
 function collectSymbols(snap: Snapshot): string[] {
@@ -39,6 +105,19 @@ function applyLiveQuote(p: Position, q: LiveQuote | undefined) {
 // Falls back silently to the committed values if a live fetch fails.
 export async function getLiveEnrichedSnapshot(): Promise<Snapshot> {
   const snap: Snapshot = JSON.parse(JSON.stringify(getSnapshot()));
+
+  // Real holdings via SnapTrade (Robinhood/Chase/Empower), if connected. Falls back to
+  // the committed sample accounts if SnapTrade isn't set up yet or the fetch fails.
+  // SnapTrade's own docs recommend a separate market-data source for pricing, so we
+  // still overlay Yahoo Finance quotes below for price/day-change on top of these.
+  try {
+    const realPositions = await getRealHoldings();
+    if (realPositions.length > 0) {
+      snap.accounts = buildAccountsFromRealHoldings(realPositions);
+    }
+  } catch {
+    // SnapTrade not configured / connected yet — keep committed sample accounts.
+  }
 
   try {
     const symbols = collectSymbols(snap);
