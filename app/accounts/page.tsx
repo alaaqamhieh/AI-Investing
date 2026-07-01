@@ -1,9 +1,11 @@
-import { getSnapshot } from "@/lib/data";
+import { getLiveEnrichedSnapshot } from "@/lib/data";
 import { AccountCard } from "@/components/AccountCard";
 import { LastUpdated } from "@/components/LastUpdated";
 
-export default function AccountsPage() {
-  const snap = getSnapshot();
+export const revalidate = 300;
+
+export default async function AccountsPage() {
+  const snap = await getLiveEnrichedSnapshot();
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">

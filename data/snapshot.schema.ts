@@ -143,55 +143,6 @@ export type MacroGate = {
   note?: string;
 };
 
-// EXPERIMENTAL — Layer 4, a different sub-domain (options premium income) than
-// SOR's current equity-rotation focus. Ad-hoc, single-ticker, nondeterministic
-// tool: not part of the deterministic screening flow above.
-export type OptionSide = "put" | "call";
-export type OptionAction = "buy" | "sell";
-
-export type OptionIdea = {
-  side: OptionSide;
-  action: OptionAction;
-  strike: number;
-  label?: string; // e.g. "ATM", "+5% OTM"
-  delta: number;
-  rationale: string;
-};
-
-export type OptionChainRow = {
-  strike: number;
-  callOi?: number;
-  callVol?: number;
-  callDelta?: number;
-  callIv?: number;
-  callBid?: number;
-  callAsk?: number;
-  putBid?: number;
-  putAsk?: number;
-  putIv?: number;
-  putDelta?: number;
-  putVol?: number;
-  putOi?: number;
-};
-
-export type OptionsAnalysis = {
-  generatedAt: string;
-  ticker: string;
-  expiry: string;
-  spot: number;
-  atmStrike: number;
-  atmIv: number;
-  realizedVol30d: number;
-  ivRank: number; // 0-100
-  skew25d: number; // percentage points, put IV minus call IV
-  daysToEarnings?: number; // negative = earnings already passed
-  verdictTags: string[]; // e.g. ["Neutral", "IV Rich"]
-  summary: string;
-  ideas: OptionIdea[];
-  risks: string[];
-  chain: OptionChainRow[];
-};
-
 export type Snapshot = {
   generatedAt: string; // ISO timestamp of when the routine pulled the data
   sample?: boolean; // true while showing placeholder data (not a live pull)
@@ -204,5 +155,4 @@ export type Snapshot = {
   screenerStack?: ScreenerStack;
   themeAllocation?: ThemeAllocation[];
   macroGate?: MacroGate; // experimental — see type above
-  optionsAnalysis?: OptionsAnalysis; // experimental — see type above
 };

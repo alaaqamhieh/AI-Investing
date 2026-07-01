@@ -1,10 +1,12 @@
-import { getSnapshot } from "@/lib/data";
+import { getLiveEnrichedSnapshot } from "@/lib/data";
 import { ScreenerTable } from "@/components/ScreenerTable";
 import { LastUpdated } from "@/components/LastUpdated";
 import { Card } from "@/components/Card";
 
-export default function ScreenerPage() {
-  const snap = getSnapshot();
+export const revalidate = 300;
+
+export default async function ScreenerPage() {
+  const snap = await getLiveEnrichedSnapshot();
   const stack = snap.screenerStack;
 
   return (

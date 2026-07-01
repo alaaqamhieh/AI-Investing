@@ -10,20 +10,29 @@ data refresh. Trade execution and a full strategy engine are intentionally out o
 
 ## How it works
 
-The hosted site is a **Next.js** app. It cannot call brokerage APIs at runtime, so data
-is captured by a **scheduled Claude routine** that pulls live numbers via MCP
-(Robinhood for the brokerage, Era Context for Chase/Empower), then commits two files:
+The hosted site is a **dynamic Next.js app on Vercel** — two different data paths feed it:
 
-- `data/snapshot.json` — portfolio snapshot (typed by `data/snapshot.schema.ts`)
-- `data/brief.md` — the day's market brief
-
-The site renders those committed files. On each push, Vercel rebuilds automatically.
+1. **Prices, VIX, and credit-spread readings — fully code-only, real-time.** Brokerage
+   MCP servers (Robinhood, Era) only authenticate inside a Claude session, but public
+   market data doesn't need that. `lib/marketData.ts` calls **Yahoo Finance** directly
+   (via the `yahoo-finance2` npm package, no API key needed) from two Route Handlers —
+   `app/api/quotes` and `app/api/macro` — and `lib/data.ts#getLiveEnrichedSnapshot()`
+   merges the results onto the committed snapshot at request time (cached ~5 min via
+   Next.js `revalidate`). No Claude session is involved in this path, ever.
+2. **Holdings, cost basis, compliance flags, screener candidates — a scheduled Claude
+   routine.** These come from account data (Robinhood/Era MCP) or SOR analysis that only
+   a Claude session can produce, so they're still committed to:
+   - `data/snapshot.json` — portfolio snapshot (typed by `data/snapshot.schema.ts`)
+   - `data/brief.md` — the day's market brief
 
 ```
+Yahoo Finance (yahoo-finance2)  ──/api/quotes, /api/macro──▶  live prices, VIX, credit spread
+                                                                (no Claude session, ever)
 Scheduled Claude routine  ──MCP pull──▶  data/snapshot.json + data/brief.md  ──push──▶  Vercel rebuild
+                                                                (holdings, compliance, screening)
 ```
 
-See **`scripts/refresh-instructions.md`** for the exact pull/assemble procedure.
+See **`scripts/refresh-instructions.md`** for the holdings/compliance pull procedure.
 
 ## Pages
 
@@ -32,6 +41,8 @@ See **`scripts/refresh-instructions.md`** for the exact pull/assemble procedure.
 - **Screener** — SOR two-layer screening (Shariah → BDS) with the screener stack and the 30%+ upside opportunity scan; flag, never hide.
 - **Daily Brief** — the SOR-format morning brief rendered from Markdown.
 - **Strategy** — the captured SOR methodology (`docs/SOR-strategy.md`).
+- **Macro Gate** *(beta)* — an experimental deployment-sizing signal; VIX Level and
+  Credit Spreads are live/computed, the rest are illustrative sample data.
 
 ## Strategy (SOR)
 
@@ -52,8 +63,9 @@ npm run build    # production build (same as Vercel runs)
 npm start        # serve the production build
 ```
 
-The app reads from the committed sample `data/snapshot.json`, so all pages render
-without any live credentials.
+The app reads holdings/compliance from the committed sample `data/snapshot.json` (no
+live credentials needed) and layers in **live prices/VIX/credit-spreads from Yahoo
+Finance** at request time — no API key or account required for that part either.
 
 ## Deploy to Vercel
 

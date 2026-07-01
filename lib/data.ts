@@ -3,13 +3,125 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import type { Snapshot } from "@/data/snapshot.schema";
+import type { Position, Snapshot } from "@/data/snapshot.schema";
+import { getLiveQuotes, getLiveMacroSignals, type LiveQuote } from "@/lib/marketData";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 
 export function getSnapshot(): Snapshot {
   const raw = fs.readFileSync(path.join(DATA_DIR, "snapshot.json"), "utf-8");
   return JSON.parse(raw) as Snapshot;
+}
+
+function collectSymbols(snap: Snapshot): string[] {
+  const symbols = new Set<string>();
+  for (const acct of snap.accounts) for (const p of acct.positions) symbols.add(p.symbol);
+  for (const p of snap.watchlist) symbols.add(p.symbol);
+  for (const s of snap.screeners) for (const r of s.results) symbols.add(r.symbol);
+  return [...symbols];
+}
+
+function applyLiveQuote(p: Position, q: LiveQuote | undefined) {
+  if (!q || q.price === null) return;
+  p.price = q.price;
+  if (q.changePct !== null) p.dayChangePct = q.changePct;
+  p.value = p.qty * q.price;
+  if (p.costBasis !== undefined) {
+    p.unrealizedPnl = p.value - p.costBasis;
+    p.unrealizedPnlPct = p.costBasis !== 0 ? (p.unrealizedPnl / p.costBasis) * 100 : undefined;
+  }
+}
+
+// Merges live Yahoo Finance quotes + computed macro signals onto the committed
+// snapshot. Position quantities, cost basis, compliance flags, and theme tags stay
+// as committed data; price-dependent fields (price, day change, value, macro scores)
+// are overwritten with real, current values fetched via lib/marketData.ts.
+// Falls back silently to the committed values if a live fetch fails.
+export async function getLiveEnrichedSnapshot(): Promise<Snapshot> {
+  const snap: Snapshot = JSON.parse(JSON.stringify(getSnapshot()));
+
+  try {
+    const symbols = collectSymbols(snap);
+    const quotes = await getLiveQuotes(symbols);
+    const bySymbol = new Map(quotes.map((q) => [q.symbol, q]));
+
+    for (const acct of snap.accounts) {
+      for (const p of acct.positions) applyLiveQuote(p, bySymbol.get(p.symbol));
+      acct.value = (acct.cash ?? 0) + acct.positions.reduce((sum, p) => sum + p.value, 0);
+      // Derive dollar day-change from each position's live % change (prevValue = value / (1 + pct/100)).
+      const dayChange = acct.positions.reduce((sum, p) => {
+        if (p.dayChangePct === undefined) return sum;
+        const prevValue = p.value / (1 + p.dayChangePct / 100);
+        return sum + (p.value - prevValue);
+      }, 0);
+      acct.dayChange = dayChange;
+      const prevAcctValue = acct.value - dayChange;
+      acct.dayChangePct = prevAcctValue !== 0 ? (dayChange / prevAcctValue) * 100 : 0;
+    }
+    for (const p of snap.watchlist) applyLiveQuote(p, bySymbol.get(p.symbol));
+    for (const s of snap.screeners) {
+      for (const r of s.results) {
+        const q = bySymbol.get(r.symbol);
+        if (q?.price !== null && q?.price !== undefined) r.price = q.price;
+        if (q?.changePct !== null && q?.changePct !== undefined) r.changePct = q.changePct;
+      }
+    }
+
+    snap.totals.netWorth = snap.accounts.reduce((sum, a) => sum + a.value, 0);
+    snap.totals.investable = snap.accounts
+      .filter((a) => a.type !== "retirement")
+      .reduce((sum, a) => sum + a.value, 0);
+    snap.totals.dayChange = snap.accounts.reduce((sum, a) => sum + a.dayChange, 0);
+    const prevNetWorth = snap.totals.netWorth - snap.totals.dayChange;
+    snap.totals.dayChangePct = prevNetWorth !== 0 ? (snap.totals.dayChange / prevNetWorth) * 100 : 0;
+
+    // Recompute top movers from live position data across all accounts.
+    const allPositions = snap.accounts.flatMap((a) => a.positions);
+    const withChange = allPositions.filter((p) => p.dayChangePct !== undefined);
+    const sorted = [...withChange].sort((a, b) => (b.dayChangePct ?? 0) - (a.dayChangePct ?? 0));
+    snap.topMovers = {
+      up: sorted.filter((p) => (p.dayChangePct ?? 0) > 0).slice(0, 3),
+      down: sorted
+        .filter((p) => (p.dayChangePct ?? 0) < 0)
+        .slice(-3)
+        .reverse(),
+    };
+  } catch {
+    // Live quotes unavailable — keep committed values.
+  }
+
+  if (snap.macroGate) {
+    try {
+      const live = await getLiveMacroSignals();
+      const byName = new Map(snap.macroGate.signals.map((s) => [s.name, s]));
+      for (const liveSignal of [live.vix, live.creditSpread]) {
+        const weight = byName.get(liveSignal.name)?.weight ?? 0;
+        byName.set(liveSignal.name, { ...liveSignal, weight });
+      }
+      snap.macroGate.signals = [...byName.values()];
+
+      const composite = snap.macroGate.signals.reduce((sum, s) => sum + s.score * s.weight, 0);
+      snap.macroGate.compositeScore = Math.round(composite);
+      if (composite >= 70) {
+        snap.macroGate.posture = "full";
+        snap.macroGate.sizingPct = 100;
+      } else if (composite >= 40) {
+        snap.macroGate.posture = "reduced";
+        snap.macroGate.sizingPct = 60;
+      } else {
+        snap.macroGate.posture = "defensive";
+        snap.macroGate.sizingPct = 25;
+      }
+      snap.macroGate.note =
+        "VIX Level and Credit Spreads are live and computed (real percentile / z-score vs. trailing 1yr). " +
+        "The remaining 4 signals stay illustrative sample values pending a bulk historical-data pipeline.";
+    } catch {
+      // Live macro fetch unavailable — keep committed values.
+    }
+  }
+
+  snap.generatedAt = new Date().toISOString();
+  return snap;
 }
 
 export function getBrief(): string {
