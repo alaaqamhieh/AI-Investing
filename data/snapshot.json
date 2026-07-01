@@ -7,14 +7,14 @@
     "compositeScore": 60,
     "posture": "reduced",
     "sizingPct": 60,
-    "note": "EXPERIMENTAL, illustrative sample values only — no live macro data feed wired up yet. See docs/SOR-strategy.md.",
+    "note": "PARTIALLY LIVE: VIX Level and Credit Spreads reflect real market quotes pulled 2026-07-01 (marked 'live'); their 0-100 scores are still approximate since a proper percentile/z-score needs historical data not yet wired up. The remaining 4 signals and the overall composite/posture are illustrative sample values. See docs/SOR-strategy.md.",
     "signals": [
-      { "name": "VIX Level", "score": 39, "weight": 0.25, "raw": "VIX 18.0 (61st percentile of trailing 1yr)" },
-      { "name": "VIX Term Structure", "score": 100, "weight": 0.2, "raw": "VIX/VIX3M 0.85 (contango — calm)" },
-      { "name": "Market Breadth", "score": 55, "weight": 0.2, "raw": "58% of S&P 500 names above 200-day MA" },
-      { "name": "Credit Spreads", "score": 79, "weight": 0.15, "raw": "HY-Treasury spread proxy, z = -1.16 (tight)" },
-      { "name": "Put/Call Sentiment", "score": 64, "weight": 0.1, "raw": "VIX 20-day rate of change -1.2%" },
-      { "name": "Factor Crowding", "score": 10, "weight": 0.1, "raw": "momentum/value 60-day correlation -0.69 (crowded)" }
+      { "name": "VIX Level", "score": 55, "weight": 0.25, "raw": "VIX 16.68 (live, 2026-07-01 07:21 ET) — score approximate, no historical percentile yet", "live": true },
+      { "name": "VIX Term Structure", "score": 100, "weight": 0.2, "raw": "VIX/VIX3M 0.85 (contango — calm) — illustrative sample" },
+      { "name": "Market Breadth", "score": 55, "weight": 0.2, "raw": "58% of S&P 500 names above 200-day MA — illustrative sample" },
+      { "name": "Credit Spreads", "score": 70, "weight": 0.15, "raw": "HYG $79.99 / TLT $86.45 (live quotes) — score approximate, no historical z-score yet", "live": true },
+      { "name": "Put/Call Sentiment", "score": 64, "weight": 0.1, "raw": "VIX 20-day rate of change -1.2% — illustrative sample" },
+      { "name": "Factor Crowding", "score": 10, "weight": 0.1, "raw": "momentum/value 60-day correlation -0.69 (crowded) — illustrative sample" }
     ]
   },
   "optionsAnalysis": {
